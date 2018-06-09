@@ -1,24 +1,71 @@
-/* CSCI3130 Assignment2 Question1 Stage1
- * Date:05/06/2018
- * Description: A Validator for validating passwords strength
-   2 rules for passwords: not equal to "password", at least 8 characters
- */
+
+import java.util.regex.*;
 
 public class Validator {
-	private String password;
-	
-	public void setPwd(String password) {
-		this.password=password;
-	}
-	public boolean getValidation() {
-		boolean check;
-		//for validation rules for stage1: not equals to "password", not less than 8 characters
-		String str=password.toLowerCase();
-		if(str.equals("password") || str.length()<9) 
-			check=false;
-		else
-			check=true;
-		return check;
-	}
-}
+    private String password;
+    private int mark=0;
 
+    public void setPwd(String password) {
+        this.password=password;
+    }
+
+    public boolean getValidation() {
+        mark=checkPwdEqual()+checkPwdLength()+checkPwdNum()+checkPwdUpper()+checkPwdLower();
+        if(mark>=5) {
+            return true;
+        }
+        else
+            return false;
+    }
+
+    //Rule1: not equal to "password"
+    public int checkPwdEqual() {
+        if(password.toLowerCase().equals("password")) {
+            return 0;
+        }
+        else
+            return 1;
+    }
+    //Rule2: at least 8 character
+    public int checkPwdLength() {
+        if(password.length()>=8) {
+            return 1;
+        }
+        else
+            return 0;
+    }
+    //Rule3: contains number
+    public int checkPwdNum() {
+        String regex="[0-9]";
+        Pattern pattern=Pattern.compile(regex);
+        Matcher matcher=pattern.matcher(password);
+        if(matcher.find()) {
+            return 1;
+        }
+        else
+            return 0;
+    }
+    //Rule4: contains upper case letter
+    public int checkPwdUpper() {
+        String regex="[A-Z]";
+        Pattern pattern=Pattern.compile(regex);
+        Matcher matcher=pattern.matcher(password);
+        if(matcher.find()) {
+            return 1;
+        }
+        else
+            return 0;
+    }
+    //Rule5: contains lower case letter
+    public int checkPwdLower() {
+        String regex="[a-z]";
+        Pattern pattern=Pattern.compile(regex);
+        Matcher matcher=pattern.matcher(password);
+        if(matcher.find()) {
+            return 1;
+        }
+        else
+            return 0;
+    }
+
+}
